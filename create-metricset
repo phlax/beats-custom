@@ -1,0 +1,10 @@
+#!/bin/sh
+
+export PATH=$PATH:$GOPATH/bin
+export MODULE="${1}"
+export METRICSET="${2}"
+
+cd metricbeat
+make create-metricset
+
+cp -a "module/${MODULE}" /var/lib/beatbox/modules
