@@ -41,7 +41,7 @@ metricbeat-image:
 		&& for mod in $$(find module/ -mindepth 1 -maxdepth 1 -type d -name "*" | cut -d/ -f2); do \
 			if [ -z "$$(echo $$modules | grep $$mod)" ]; then \
 				echo "DISABLING MODULE $$mod"; \
-				find "module/$${mod}" -name module.yml | xargs rm; \
+				find "module/$${mod}" -name "module\.yml"; \
 			fi; \
 		   done
 	docker run --rm \
