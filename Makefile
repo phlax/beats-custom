@@ -38,7 +38,7 @@ metricbeat-image:
 		&& cd beats \
 		&& git checkout $$BEATS_BRANCH \
 		&& cd metricbeat \
-		&& for mod in $$(ls -d module); do \
+		&& for mod in $$(find module/ -mindepth 1 -maxdepth 1 -type d -name "*" | cut -d/ -f2); do \
 			if [ -z "$$(echo $$modules | grep $$mod)" ]; then \
 				echo "REMOVING MODULE $$mod"; \
 				rm -rf "module/$${mod}"; \
