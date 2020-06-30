@@ -40,8 +40,8 @@ metricbeat-image:
 		&& cd metricbeat \
 		&& for mod in $$(find module/ -mindepth 1 -maxdepth 1 -type d -name "*" | cut -d/ -f2); do \
 			if [ -z "$$(echo $$modules | grep $$mod)" ]; then \
-				echo "REMOVING MODULE $$mod"; \
-				rm -rf "module/$${mod}"; \
+				echo "DISABLING MODULE $$mod"; \
+				find "module/$${mod}" -name module.yml | xargs rm; \
 			fi; \
 		   done
 	docker run --rm \
