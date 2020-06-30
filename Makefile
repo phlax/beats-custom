@@ -41,7 +41,7 @@ metricbeat-image:
 		&& for mod in $$(find module/ -mindepth 1 -maxdepth 1 -type d -name "*" | cut -d/ -f2); do \
 			if [ -z "$$(echo $$modules | grep $$mod)" ]; then \
 				echo "DISABLING MODULE $$mod"; \
-				find "module/$${mod}" -name "module\.yml"; \
+				rm -rf "module/$$mod"; \
 			fi; \
 		   done
 	docker run --rm \
@@ -54,7 +54,7 @@ metricbeat-image:
 		-e GO111MODULE=on \
 		-e WORKSPACE=/var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
 		phlax/beatbox:$$BEATS_BRANCH \
-		make release
+		bash -c "make update && make release"
 	docker build -t phlax/metricbeat:$$BEATS_BRANCH context/metricbeat
 
 images: metricbeat-image
