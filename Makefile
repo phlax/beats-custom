@@ -13,7 +13,7 @@ metricbeat-image:
 		&& git checkout $$BEATS_BRANCH
 	docker run --rm \
 		-v /var/lib/beatbox/pkg:/tmp/pkg \
-		phlax/beatbox:$BEATS_BRANCH \
+		phlax/beatbox:$$BEATS_BRANCH \
 		cp -a /var/lib/beatbox/pkg/mod /tmp/pkg
 	docker run --rm \
 		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod \
