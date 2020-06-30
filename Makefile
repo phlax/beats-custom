@@ -51,7 +51,6 @@ metricbeat-image:
 		-w /var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
 		-e SNAPSHOT=true \
 		-e PLATFORMS=linux/amd64 \
-		-e GO111MODULE=on \
 		-e WORKSPACE=/var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
 		phlax/beatbox:$$BEATS_BRANCH \
 		bash -c "cd .. && make update && git grep aerospike && make release"
