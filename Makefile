@@ -32,7 +32,7 @@ metricbeat-image:
 	docker pull phlax/beatbox:$$BEATS_BRANCH
 	sudo mkdir -p /var/lib/beatbox/src/github.com/elastic
 	sudo chown -R travis /var/lib/beatbox
-	export modules=$(cat metricbeat-modules) \
+	export modules=$$(cat metricbeat-modules) \
 		&& cd /var/lib/beatbox/src/github.com/elastic \
 		&& if [ ! -d beats ]; then git clone https://github.com/elastic/beats; fi \
 		&& cd beats \
