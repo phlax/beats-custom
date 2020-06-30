@@ -29,7 +29,7 @@ metricbeat-image:
 	docker build -t phlax/metricbeat:$$BEATS_BRANCH context/metricbeat
 
 images: metricbeat-image
-	docker build --build-arg BEATS_BRANCH=$$BEATS_BRANCH -t phlax/beatbox:$$BEATS_BRANCH context
+	echo "done"
 
 hub-images:
 	docker push phlax/metricbeat:$$BEATS_BRANCH
