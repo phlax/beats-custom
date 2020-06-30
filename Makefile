@@ -45,10 +45,6 @@ metricbeat-image:
 			fi; \
 		   done
 	docker run --rm \
-		-v /var/lib/beatbox/pkg:/tmp/pkg \
-		phlax/beatbox:$$BEATS_BRANCH \
-		cp -a /var/lib/beatbox/pkg/mod /tmp/pkg
-	docker run --rm \
 		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v /var/lib/beatbox/src/github.com/elastic/beats:/var/lib/beatbox/src/github.com/elastic/beats \
