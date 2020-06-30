@@ -32,10 +32,18 @@ metricbeat-image:
 	docker pull phlax/beatbox:$$BEATS_BRANCH
 	sudo mkdir -p /var/lib/beatbox/src/github.com/elastic
 	sudo chown -R travis /var/lib/beatbox
-	cd /var/lib/beatbox/src/github.com/elastic \
-		&& git clone https://github.com/elastic/beats \
+	export modules=$(cat metricbeat-modules) \
+		&& cd /var/lib/beatbox/src/github.com/elastic \
+		&& if [ ! -d beats ]; then git clone https://github.com/elastic/beats; fi \
 		&& cd beats \
-		&& git checkout $$BEATS_BRANCH
+		&& git checkout $$BEATS_BRANCH \
+		&& cd metricbeat \
+		&& for mod in $$(ls module); do \
+			if ! $$(echo $modules | grep $$mod); then \
+				echo "REMOVING MODULE $$mod"; \
+				rm -rf "module/$${mod}"; \
+			fi; \
+		   done
 	docker run --rm \
 		-v /var/lib/beatbox/pkg:/tmp/pkg \
 		phlax/beatbox:$$BEATS_BRANCH \
@@ -53,8 +61,8 @@ metricbeat-image:
 		make release
 	docker build -t phlax/metricbeat:$$BEATS_BRANCH context/metricbeat
 
-images: filebeat-image
+images: metricbeat-image
 	echo "done"
 
 hub-images:
-	docker push phlax/filebeat:$$BEATS_BRANCH
+	docker push phlax/metricbeat:$$BEATS_BRANCH
