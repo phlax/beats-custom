@@ -1,0 +1,94 @@
+filebeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
+
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      templates:
+        - condition:
+            contains.docker.container.image: nginx
+          config:
+            - module: nginx
+              access:
+                input:
+                  type: docker
+                  containers.ids: "${data.docker.container.id}"
+                  containers.stream: stdout
+              error:
+                input:
+                  type: docker
+                  containers.ids: "${data.docker.container.id}"
+                  containers.stream: stderr
+        - condition:
+            contains.docker.container.image: mariadb
+          config:
+            - module: mysql
+              error:
+                input:
+                  type: docker
+                  containers.ids: "${data.docker.container.id}"
+                  containers.stream: all
+        - condition:
+            contains.docker.container.image: postgres
+          config:
+            - module: postgresql
+              log:
+                input:
+                  type: docker
+                  containers.ids: "${data.docker.container.id}"
+                  containers.stream: all
+        - condition:
+            contains.docker.container.image: docker.elastic.co/kibana/kibana
+          config:
+            - module: kibana
+              log:
+                input:
+                  type: docker
+                  containers.ids: "${data.docker.container.id}"
+                  containers.stream: all
+                  processors:
+                    - drop_events:
+                        when:
+                          equals:
+                            url.original: /api/status
+        - condition:
+            contains.docker.container.image: docker.elastic.co/elasticsearch/elasticsearch
+          config:
+            - module: elasticsearch
+              server:
+                input:
+                  type: docker
+                  containers.ids: "${data.docker.container.id}"
+                  containers.stream: all
+        - condition:
+            contains.docker.container.image: envoy
+          config:
+            - module: envoyproxy
+              log:
+                input:
+                  type: docker
+                  containers.ids: "${data.docker.container.id}"
+                  containers.stream: all
+
+
+processors:
+  - drop_fields:
+      fields: ["docker.container.labels"]
+      ignore_missing: true
+
+output.elasticsearch:
+  hosts: '${ELASTICSEARCH_HOSTS:elasticsearch:9200}'
+  username: '${ELASTICSEARCH_USERNAME:elastic}'
+  password: '${ELASTICSEARCH_PASSWORD:}'
+
+strict.perms: false
+setup.template:
+  enabled: false
+  overwrite: true
+  fields: "/usr/share/filebeat/fields.yml"
+
+http:
+  enabled: true
+  host: unix:///var/run/sockets/filebeat.sock

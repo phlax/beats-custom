@@ -1,0 +1,7 @@
+filebeat.modules:
+- module: system
+  syslog:
+    input:
+      type: syslog
+      protocol.unix:
+        path: /var/run/fatc/sockets/system/syslog.sock
