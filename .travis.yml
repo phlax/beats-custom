@@ -7,27 +7,13 @@ env:
     - BEATS_BRANCH=7.x
 
 before-install:
-  - docker pull phlax/beatbox:$BEATS_BRANCH
+  - make images
 
 script:
-  - export CWD=$(pwd)
-  - sudo mkdir -p /var/lib/beatbox/src/github.com/elastic
-  - sudo chown -R travis /var/lib/beatbox
-  - cd /var/lib/beatbox/src/github.com/elastic
-  - git clone https://github.com/elastic/beats
-  - cd beats
-  - git checkout $BEATS_BRANCH
-  - cd /var/lib/beatbox
-  - docker run --rm -v /var/lib/beatbox/pkg:/tmp/pkg phlax/beatbox:$BEATS_BRANCH cp -a /var/lib/beatbox/pkg/mod /tmp/pkg
-  - docker run --rm -v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/beatbox/src/github.com/elastic/beats:/var/lib/beatbox/src/github.com/elastic/beats -w /var/lib/beatbox/src/github.com/elastic/beats/metricbeat -e SNAPSHOT=true -e PLATFORMS=linux/amd64 -e GO111MODULE=on -e WORKSPACE=/var/lib/beatbox/src/github.com/elastic/beats/metricbeat phlax/beatbox:$BEATS_BRANCH make release
-
-  - cd $CWD
-  - docker build -t phlax/metricbeat:$BEATS_BRANCH context/metricbeat
   - docker images
 
 before_deploy:
   - echo $DOCKER_ACCESS_TOKEN | docker login -u phlax --password-stdin
-
 
 deploy:
   provider: script
