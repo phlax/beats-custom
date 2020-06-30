@@ -54,7 +54,7 @@ metricbeat-image:
 		-e GO111MODULE=on \
 		-e WORKSPACE=/var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
 		phlax/beatbox:$$BEATS_BRANCH \
-		bash -c "ls .. && make clean && make update && git grep aerospike && make release"
+		bash -c "cd .. && make update && git grep aerospike && make release"
 	docker build -t phlax/metricbeat:$$BEATS_BRANCH context/metricbeat
 
 images: metricbeat-image
