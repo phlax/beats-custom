@@ -1,0 +1,13 @@
+beat
+docker
+elasticsearch
+envoyproxy
+kibana
+linux
+mysql
+nginx
+php_fpm
+postgresql
+redis
+system
+uwsgi
