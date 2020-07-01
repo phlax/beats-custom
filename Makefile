@@ -32,11 +32,10 @@ metricbeat-image:
 	docker pull phlax/beatbox:$$BEATS_BRANCH
 	sudo mkdir -p /var/lib/beatbox/src/github.com/elastic
 	sudo chown -R `whoami` /var/lib/beatbox
-	export cd /var/lib/beatbox/src/github.com/elastic \
+	cd /var/lib/beatbox/src/github.com/elastic \
 		&& if [ ! -d beats ]; then git clone https://github.com/elastic/beats; fi \
 		&& cd beats \
-		&& git checkout $$BEATS_BRANCH \
-		&& cd metricbeat
+		&& git checkout $$BEATS_BRANCH
 	docker run --rm \
 		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod \
 		-v /var/run/docker.sock:/var/run/docker.sock \
@@ -55,11 +54,7 @@ metricbeat-image:
 		phlax/beatbox:$$BEATS_BRANCH \
 		mage GenerateCustomBeat
 	export modules=$$(cat metricbeat-modules) \
-		&& cd /var/lib/beatbox/src/github.com/elastic \
-		&& if [ ! -d beats ]; then git clone https://github.com/elastic/beats; fi \
-		&& cd beats \
-		&& git checkout $$BEATS_BRANCH \
-		&& cd metricbeat \
+		&& cd /var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
 		&& for mod in $$(find module/ -mindepth 1 -maxdepth 1 -type d -name "*" | cut -d/ -f2); do \
 			if [ -n "$$(echo $$modules | grep $$mod)" ]; then \
 				echo "ENABLING MODULE $$mod"; \
