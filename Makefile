@@ -48,14 +48,13 @@ metricbeat-image:
 		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v /var/lib/beatbox/src/github.com/elastic/beats:/var/lib/beatbox/src/github.com/elastic/beats \
+		-v `pwd`/list_common.go:/var/lib/beatbox/src/github.com/elastic/beats/metricbeat/include/list_common.go \
 		-w /var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
 		-e SNAPSHOT=true \
 		-e PLATFORMS=linux/amd64 \
 		-e WORKSPACE=/var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
 		phlax/beatbox:$$BEATS_BRANCH \
 		make release
-		# bash -c "make update" # -c "make update && git grep aerospike && make release"
-	# docker build -t phlax/metricbeat:$$BEATS_BRANCH context/metricbeat
 
 
 images: metricbeat-image
