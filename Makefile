@@ -45,6 +45,7 @@ metricbeat-image:
 				# rm -rf "module/$$mod/_meta/config.yml"; \
 			fi; \
 		   done
+	docker run --rm phlax/beatbox:$$BEATS_BRANCH ls /var/lib/beatbox/src/github.com/elastic/beats
 	docker run --rm \
 		-v `pwd`/list_common.go:/var/lib/beatbox/src/github.com/elastic/beats/metricbeat/include/list_common.go \
 		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod \
@@ -58,6 +59,8 @@ metricbeat-image:
 		-e NEWBEAT_BEAT_PATH=github.com/phlax/modbeat \
 		-e NEWBEAT_FULL_NAME="Ryan Northey" \
 		-e NEWBEAT_BEATS_REVISION=master \
+		-e MODULE=mymodule \
+		-e METRICSET=mymetrics \
 		phlax/beatbox:$$BEATS_BRANCH \
 		mage GenerateCustomBeat
 	ls /var/lib/beatbox/src/github.com
