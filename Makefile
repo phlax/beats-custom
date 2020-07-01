@@ -41,20 +41,19 @@ metricbeat-image:
 		&& for mod in $$(find module/ -mindepth 1 -maxdepth 1 -type d -name "*" | cut -d/ -f2); do \
 			if [ -z "$$(echo $$modules | grep $$mod)" ]; then \
 				echo "DISABLING MODULE $$mod"; \
-				rm -rf "module/$$mod"; \
+				rm -rf "module/$$mod/_meta/config.yml"; \
 			fi; \
 		   done
 	docker run --rm \
 		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod:shared \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v /var/lib/beatbox/src/github.com/elastic/beats:/var/lib/beatbox/src/github.com/elastic/beats \
-		-v `pwd`/list_common.go:/var/lib/beatbox/src/github.com/elastic/beats/metricbeat/include/list_common.go \
 		-w /var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
 		-e SNAPSHOT=true \
 		-e PLATFORMS=linux/amd64 \
 		-e WORKSPACE=/var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
 		phlax/beatbox:$$BEATS_BRANCH \
-		bash -c "make update && make release"
+		make release
 
 
 images: metricbeat-image
