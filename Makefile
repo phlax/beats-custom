@@ -81,7 +81,7 @@ modbeat-image:
 		phlax/beatbox:$$BEATS_BRANCH \
 		make release
 	ls /var/lib/beatbox/src/github.com/phlax/modbeat/module
-	cat /var/lib/beatbox/src/github.com/phlax/modbeat/modbeat.yml
+	sudo cat /var/lib/beatbox/src/github.com/phlax/modbeat/modbeat.yml
 	docker images
 	docker build -t phlax/modbeat:$$BEATS_BRANCH context/modbeat
 
