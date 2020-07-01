@@ -47,12 +47,10 @@ metricbeat-image:
 		   done
 	docker run --rm phlax/beatbox:$$BEATS_BRANCH ls /var/lib/beatbox/src/github.com/elastic/beats
 	docker run --rm \
-		-v `pwd`/list_common.go:/var/lib/beatbox/src/github.com/elastic/beats/metricbeat/include/list_common.go \
 		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v /var/lib/beatbox/src:/var/lib/beatbox/src \
-		-e GIT_COMMITTER_NAME="Ryan Northey" \
-		-e GIT_COMMITTER_EMAIL="ryan@synca.io" \
+		-v `pwd`/gitconfig:/root/.gitconfig \
 		-e SNAPSHOT=true \
 		-e PLATFORMS=linux/amd64 \
 		-e NEWBEAT_TYPE=metricbeat \
