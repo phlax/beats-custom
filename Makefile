@@ -57,7 +57,7 @@ metricbeat-image:
 		-e NEWBEAT_GITHUB_NAME=phlax \
 		-e NEWBEAT_BEAT_PATH=github.com/phlax/modbeat \
 		-e NEWBEAT_FULL_NAME="Ryan Northey" \
-		-e NEWBEAT_BEATS_REVISION=7.x \
+		-e NEWBEAT_BEATS_REVISION=master \
 		phlax/beatbox:$$BEATS_BRANCH \
 		mage GenerateCustomBeat
 	ls /var/lib/beatbox/src/github.com
