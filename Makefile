@@ -68,7 +68,7 @@ metricbeat-image:
 		-v /var/lib/beatbox/src:/var/lib/beatbox/src \
 		-e SNAPSHOT=true \
 		-e PLATFORMS=linux/amd64 \
-		-e /var/lib/beatbox/src/github.com/phlax/modbeat \
+		-w /var/lib/beatbox/src/github.com/phlax/modbeat \
 		phlax/beatbox:$$BEATS_BRANCH \
 		make release
 	docker images
