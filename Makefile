@@ -46,6 +46,7 @@ metricbeat-image:
 			fi; \
 		   done
 	docker run --rm \
+		-v `pwd`/list_common.go:/var/lib/beatbox/src/github.com/elastic/beats/metricbeat/include/list_common.go \
 		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod:shared \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v /var/lib/beatbox/src/github.com/elastic/beats:/var/lib/beatbox/src/github.com/elastic/beats \
