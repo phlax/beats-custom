@@ -41,6 +41,7 @@ metricbeat-image:
 		&& for mod in $$(find module/ -mindepth 1 -maxdepth 1 -type d -name "*" | cut -d/ -f2); do \
 			if [ -z "$$(echo $$modules | grep $$mod)" ]; then \
 				echo "DISABLING MODULE $$mod"; \
+				rm -rf "module/$$mod/module.yml"; \
 				rm -rf "module/$$mod/_meta/config.yml"; \
 			fi; \
 		   done
