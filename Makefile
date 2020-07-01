@@ -51,6 +51,8 @@ metricbeat-image:
 		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v /var/lib/beatbox/src:/var/lib/beatbox/src \
+		-e GIT_COMMITTER_NAME="Ryan Northey" \
+		-e GIT_COMMITTER_EMAIL="ryan@synca.io" \
 		-e SNAPSHOT=true \
 		-e PLATFORMS=linux/amd64 \
 		-e NEWBEAT_TYPE=metricbeat \
