@@ -28,7 +28,7 @@ filebeat-image:
 		make release
 	docker build -t phlax/filebeat:$$BEATS_BRANCH context/filebeat
 
-metricbeat-image:
+modbeat-image:
 	docker pull phlax/beatbox:$$BEATS_BRANCH
 	sudo mkdir -p /var/lib/beatbox/src/github.com/elastic
 	sudo chown -R `whoami` /var/lib/beatbox
@@ -48,7 +48,7 @@ metricbeat-image:
 		-e NEWBEAT_GITHUB_NAME=phlax \
 		-e NEWBEAT_BEAT_PATH=github.com/phlax/modbeat \
 		-e NEWBEAT_FULL_NAME="Ryan Northey" \
-		-e NEWBEAT_BEATS_REVISION=master \
+		-e NEWBEAT_BEATS_REVISION=$$BEATS_BRANCH \
 		-e MODULE=mymodule \
 		-e METRICSET=mymetrics \
 		phlax/beatbox:$$BEATS_BRANCH \
@@ -72,9 +72,9 @@ metricbeat-image:
 		phlax/beatbox:$$BEATS_BRANCH \
 		make release
 	docker images
-	docker build -t phlax/modbeat:$$BEATS_BRANCH context/metricbeat
+	docker build -t phlax/modbeat:$$BEATS_BRANCH context/modbeat
 
-images: metricbeat-image
+images: modbeat-image
 	echo "done"
 
 hub-images:
