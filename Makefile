@@ -80,6 +80,7 @@ metricbeat-image:
 		-e /var/lib/beatbox/src/github.com/phlax/modbeat \
 		phlax/beatbox:$$BEATS_BRANCH \
 		make release
+	docker images
 	docker build -t phlax/modbeat:$$BEATS_BRANCH context/metricbeat
 
 images: metricbeat-image
