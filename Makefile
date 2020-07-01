@@ -41,22 +41,26 @@ metricbeat-image:
 		&& for mod in $$(find module/ -mindepth 1 -maxdepth 1 -type d -name "*" | cut -d/ -f2); do \
 			if [ -z "$$(echo $$modules | grep $$mod)" ]; then \
 				echo "DISABLING MODULE $$mod"; \
-				rm -rf "module/$$mod/module.yml"; \
-				rm -rf "module/$$mod/_meta/config.yml"; \
+				# rm -rf "module/$$mod/module.yml"; \
+				# rm -rf "module/$$mod/_meta/config.yml"; \
 			fi; \
 		   done
 	docker run --rm \
 		-v `pwd`/list_common.go:/var/lib/beatbox/src/github.com/elastic/beats/metricbeat/include/list_common.go \
-		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod:shared \
+		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod \
 		-v /var/run/docker.sock:/var/run/docker.sock \
-		-v /var/lib/beatbox/src/github.com/elastic/beats:/var/lib/beatbox/src/github.com/elastic/beats \
-		-w /var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
+		-v /var/lib/beatbox/src:/var/lib/beatbox/src \
 		-e SNAPSHOT=true \
 		-e PLATFORMS=linux/amd64 \
-		-e WORKSPACE=/var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
+		-e NEWBEAT_TYPE=metricbeat \
+		-e NEWBEAT_PROJECT_NAME=modbeat \
+		-e NEWBEAT_GITHUB_NAME=phlax \
+		-e NEWBEAT_BEAT_PATH=github.com/phlax/modbeat \
+		-e NEWBEAT_FULL_NAME="Ryan Northey" \
+		-e NEWBEAT_BEATS_REVISION=7.x \
 		phlax/beatbox:$$BEATS_BRANCH \
-		make release
-
+		mage GenerateCustomBeat
+	ls /var/lib/beatbox/src/github.com
 
 images: metricbeat-image
 	echo "done"
