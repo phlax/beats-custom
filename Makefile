@@ -70,6 +70,15 @@ modbeat-image:
 		-e PLATFORMS=linux/amd64 \
 		-w /var/lib/beatbox/src/github.com/phlax/modbeat \
 		phlax/beatbox:$$BEATS_BRANCH \
+		make setup
+	docker run --rm \
+		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		-v /var/lib/beatbox/src:/var/lib/beatbox/src \
+		-e SNAPSHOT=true \
+		-e PLATFORMS=linux/amd64 \
+		-w /var/lib/beatbox/src/github.com/phlax/modbeat \
+		phlax/beatbox:$$BEATS_BRANCH \
 		make release
 	docker images
 	docker build -t phlax/modbeat:$$BEATS_BRANCH context/modbeat
