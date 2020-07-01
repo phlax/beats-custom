@@ -45,7 +45,7 @@ metricbeat-image:
 			fi; \
 		   done
 	docker run --rm \
-		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod \
+		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod:shared \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v /var/lib/beatbox/src/github.com/elastic/beats:/var/lib/beatbox/src/github.com/elastic/beats \
 		-v `pwd`/list_common.go:/var/lib/beatbox/src/github.com/elastic/beats/metricbeat/include/list_common.go \
@@ -54,7 +54,7 @@ metricbeat-image:
 		-e PLATFORMS=linux/amd64 \
 		-e WORKSPACE=/var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
 		phlax/beatbox:$$BEATS_BRANCH \
-		make release
+		bash -c "make update && make release"
 
 
 images: metricbeat-image
