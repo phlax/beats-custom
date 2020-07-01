@@ -54,7 +54,7 @@ metricbeat-image:
 		phlax/beatbox:$$BEATS_BRANCH \
 		mage GenerateCustomBeat
 	export modules=$$(cat metricbeat-modules) \
-		&& sudo chown -R `whoami` /var/lib/beatboxsrc/github.com/phlax/modbeat/module \
+		&& sudo chown -R `whoami` /var/lib/beatbox/src/github.com/phlax/modbeat/module \
 		&& cd /var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
 		&& for mod in $$(find module/ -mindepth 1 -maxdepth 1 -type d -name "*" | cut -d/ -f2); do \
 			if [ -n "$$(echo $$modules | grep $$mod)" ]; then \
