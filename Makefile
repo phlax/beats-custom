@@ -64,6 +64,8 @@ metricbeat-image:
 		phlax/beatbox:$$BEATS_BRANCH \
 		mage GenerateCustomBeat
 	ls /var/lib/beatbox/src/github.com
+	ls /var/lib/beatbox/src/github.com/phlax
+	ls /var/lib/beatbox/src/github.com/phlax/modbeat
 
 images: metricbeat-image
 	echo "done"
