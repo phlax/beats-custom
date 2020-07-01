@@ -56,6 +56,7 @@ modbeat-image:
 	export modules=$$(cat metricbeat-modules) \
 		&& sudo chown -R `whoami` /var/lib/beatbox/src/github.com/phlax/modbeat/module \
 		&& cd /var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
+		&& sudo cp ../.go-version /var/lib/beatbox/src/github.com/phlax/modbeat/.go-version \
 		&& for mod in $$(find module/ -mindepth 1 -maxdepth 1 -type d -name "*" | cut -d/ -f2); do \
 			if [ -n "$$(echo $$modules | grep $$mod)" ]; then \
 				echo "ENABLING MODULE $$mod"; \
@@ -80,8 +81,9 @@ modbeat-image:
 		-w /var/lib/beatbox/src/github.com/phlax/modbeat \
 		phlax/beatbox:$$BEATS_BRANCH \
 		make release
+	ls -a /var/lib/beatbox/src/github.com/phlax/modbeat
 	ls /var/lib/beatbox/src/github.com/phlax/modbeat/module
-	sudo cat /var/lib/beatbox/src/github.com/phlax/modbeat/modbeat.yml
+	# sudo cat /var/lib/beatbox/src/github.com/phlax/modbeat/modbeat.yml
 	docker images
 	docker build -t phlax/modbeat:$$BEATS_BRANCH context/modbeat
 
