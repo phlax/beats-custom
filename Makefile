@@ -59,11 +59,11 @@ modbeat-image:
 		&& for mod in $$(find module/ -mindepth 1 -maxdepth 1 -type d -name "*" | cut -d/ -f2); do \
 			if [ -n "$$(echo $$modules | grep $$mod)" ]; then \
 				echo "ENABLING MODULE $$mod"; \
-				cp -a "module/${mod}" /var/lib/beatbox/src/github.com/phlax/modbeat/module; \
+				cp -a "module/$${mod}" /var/lib/beatbox/src/github.com/phlax/modbeat/module; \
 			fi; \
 		   done
 	docker run --rm \
-		-v /var/lib/beatbox/pkg/mod:/var/lib/beatbox/pkg/mod \
+		-v /var/lib/beatbox/pkg:/var/lib/beatbox/pkg \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v /var/lib/beatbox/src:/var/lib/beatbox/src \
 		-e SNAPSHOT=true \
@@ -80,6 +80,8 @@ modbeat-image:
 		-w /var/lib/beatbox/src/github.com/phlax/modbeat \
 		phlax/beatbox:$$BEATS_BRANCH \
 		make release
+	ls /var/lib/beatbox/src/github.com/phlax/modbeat/module
+	cat /var/lib/beatbox/src/github.com/phlax/modbeat/modbeat.yml
 	docker images
 	docker build -t phlax/modbeat:$$BEATS_BRANCH context/modbeat
 
