@@ -3,11 +3,13 @@ docker
 elasticsearch
 envoyproxy
 kibana
+kubernetes
 linux
 mysql
 nginx
 php_fpm
 postgresql
+prometheus
 redis
 system
 uwsgi
