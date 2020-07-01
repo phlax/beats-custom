@@ -6,7 +6,7 @@ SHELL := /bin/bash
 filebeat-image:
 	docker pull phlax/beatbox:$$BEATS_BRANCH
 	sudo mkdir -p /var/lib/beatbox/src/github.com/elastic
-	sudo chown -R travis /var/lib/beatbox
+	sudo chown -R `whoami` /var/lib/beatbox
 	cd /var/lib/beatbox/src/github.com/elastic \
 		&& git clone https://github.com/elastic/beats \
 		&& cd beats \
@@ -31,7 +31,7 @@ filebeat-image:
 metricbeat-image:
 	docker pull phlax/beatbox:$$BEATS_BRANCH
 	sudo mkdir -p /var/lib/beatbox/src/github.com/elastic
-	sudo chown -R travis /var/lib/beatbox
+	sudo chown -R `whoami` /var/lib/beatbox
 	export modules=$$(cat metricbeat-modules) \
 		&& cd /var/lib/beatbox/src/github.com/elastic \
 		&& if [ ! -d beats ]; then git clone https://github.com/elastic/beats; fi \
@@ -53,8 +53,10 @@ metricbeat-image:
 		-e PLATFORMS=linux/amd64 \
 		-e WORKSPACE=/var/lib/beatbox/src/github.com/elastic/beats/metricbeat \
 		phlax/beatbox:$$BEATS_BRANCH \
-		bash -c "cd .. && make update && git grep aerospike && make release"
-	docker build -t phlax/metricbeat:$$BEATS_BRANCH context/metricbeat
+		make release
+		# bash -c "make update" # -c "make update && git grep aerospike && make release"
+	# docker build -t phlax/metricbeat:$$BEATS_BRANCH context/metricbeat
+
 
 images: metricbeat-image
 	echo "done"
